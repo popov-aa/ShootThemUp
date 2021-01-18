@@ -9,8 +9,12 @@ ASTUBaseCharacter::ASTUBaseCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+    this->SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>("SpringArmComponent");
+    this->SpringArmComponent->SetupAttachment(this->GetRootComponent());
+    this->SpringArmComponent->bUsePawnControlRotation = true;
+    
     this->CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
-    this->CameraComponent->SetupAttachment(this->GetRootComponent());
+    this->CameraComponent->SetupAttachment(this->SpringArmComponent);
 }
 
 // Called when the game starts or when spawned
@@ -35,6 +39,8 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     {
         PlayerInputComponent->BindAxis("MoveForward", this, &ASTUBaseCharacter::MoveForward);
         PlayerInputComponent->BindAxis("MoveRight", this, &ASTUBaseCharacter::MoveRight);
+        PlayerInputComponent->BindAxis("LookUp", this, &ASTUBaseCharacter::AddControllerPitchInput);
+        PlayerInputComponent->BindAxis("TurnAround", this, &ASTUBaseCharacter::AddControllerYawInput);
     }
 }
 
@@ -47,4 +53,3 @@ void ASTUBaseCharacter::MoveRight(float Amount)
 {
     this->AddMovementInput(this->GetActorRightVector(), Amount);
 }
-

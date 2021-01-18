@@ -1,6 +1,7 @@
 // ShootThemUp Game. All rights reserved.
 
 #pragma once
+#include "GameFramework/SpringArmComponent.h"
 
 class UCameraComponent;
 
@@ -21,6 +22,9 @@ public:
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
     UCameraComponent* CameraComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="SpringArmComponent")
+    USpringArmComponent* SpringArmComponent;
     
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -35,5 +39,4 @@ public:
 private:
     void MoveForward(float Amount);
     void MoveRight(float Amount);
-    
 };
