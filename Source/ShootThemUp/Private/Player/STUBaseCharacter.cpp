@@ -53,15 +53,34 @@ bool ASTUBaseCharacter::IsRunning() const
     return this->WantsToRun && this->IsMovingForward && !this->GetVelocity().IsZero();
 }
 
+float ASTUBaseCharacter::GetMovementDirection() const
+{
+    if (GetVelocity().IsZero())
+    {
+        return 0;
+    }
+    const auto VelocityNormal = GetVelocity().GetSafeNormal();
+    const auto AngleBetween = FMath::Acos(FVector::DotProduct(GetActorForwardVector(), VelocityNormal));
+    const auto CrossProduct = FVector::CrossProduct(GetActorForwardVector(), VelocityNormal);
+    const auto Degrees = FMath::RadiansToDegrees(AngleBetween); 
+    return CrossProduct.IsZero() ? Degrees : Degrees * FMath::Sign(CrossProduct.Z);
+}
+
 void ASTUBaseCharacter::MoveForward(float Amount)
 {
     this->IsMovingForward = Amount > 0.0f;
-    this->AddMovementInput(this->GetActorForwardVector(), Amount);
+    if (Amount != 0.0f)
+    {
+        this->AddMovementInput(this->GetActorForwardVector(), Amount);        
+    }
 }
 
 void ASTUBaseCharacter::MoveRight(float Amount)
 {
-    this->AddMovementInput(this->GetActorRightVector(), Amount);
+    if (Amount != 0.0f)
+    {
+        this->AddMovementInput(this->GetActorRightVector(), Amount);        
+    }
 }
 
 void ASTUBaseCharacter::OnStartRunning()
