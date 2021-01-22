@@ -17,19 +17,27 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjectInitializer
     
     this->CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     this->CameraComponent->SetupAttachment(this->SpringArmComponent);
+
+    this->HealthComponent = CreateDefaultSubobject<USTUHealthComponent>("HealthComponent");
+
+    this->HealthTextComponent = CreateDefaultSubobject<UTextRenderComponent>("HealthTextComponent");
+    this->HealthTextComponent->SetupAttachment(this->GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void ASTUBaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+    check(this->HealthComponent);
+    check(this->HealthTextComponent);
 }
 
 // Called every frame
 void ASTUBaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+    this->HealthTextComponent->SetText(FText::FromString(FString::SanitizeFloat(this->HealthComponent->GetHealth()))); 
 }
 
 // Called to bind functionality to input

@@ -1,6 +1,8 @@
 // ShootThemUp Game. All rights reserved.
 
 #pragma once
+#include "Components/STUHealthComponent.h"
+#include "Components/TextRenderComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 
 class UCameraComponent;
@@ -25,6 +27,12 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="SpringArmComponent")
     USpringArmComponent* SpringArmComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    USTUHealthComponent* HealthComponent;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category="Components")
+    UTextRenderComponent* HealthTextComponent;
     
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
